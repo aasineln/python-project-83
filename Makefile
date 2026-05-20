@@ -20,3 +20,6 @@ lint:
 
 lint-fix:
 	uv run ruff check --fix .
+
+black:
+	uv run black . --target-version py312 .
