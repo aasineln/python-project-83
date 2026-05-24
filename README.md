@@ -5,6 +5,9 @@
 
 A simple web application for adding URLs and performing basic health checks on them.
 
+### Project link  
+https://page-analyzer-jul7.onrender.com/  
+
 ### ⚙️ How It Works
 
     1. Adding a URL: A user submits a URL on the main page (/). The application validates the input, normalizes it, and saves it to the urls table in the database.

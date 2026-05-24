@@ -6,5 +6,5 @@ make install
 
 DB_NAME=${DATABASE_URL##*/}
 echo "Creating database '$DB_NAME'..."
-sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;"
-sudo -u postgres psql -d page_analyzer_dev -f database.sql
+psql -U postgres -c "CREATE DATABASE $DB_NAME;"
+psql -U postgres -d $DB_NAME -f database.sql
