@@ -50,7 +50,7 @@ To run this project locally, you need to have the following installed:
 
 4. Configure Database
 Set up the database:
-- Create a new database in your PostgreSQL instance (e.g., page_analyzer_dev).
+- Create a new database in your PostgreSQL instance (e.g., page_analyzer_db).
 - Create a .env file in the root directory with your database connection string:
 ```bash
   DATABASE_URL=postgres://username:password@localhost:5432/page_analyzer_dev
