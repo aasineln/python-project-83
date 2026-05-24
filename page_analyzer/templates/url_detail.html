@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ url.name }} - Анализатор страниц{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h2 mb-4">Сайт: {{ url.name }}</h1>
+            
+            <div class="card shadow-sm" data-test="url">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h5 mb-0">Информация о сайте</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <th style="width: 150px;">ID:</th>
+                                <td>{{ url.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Имя:</th>
+                                <td>
+                                    <a href="{{ url.name }}" target="_blank" rel="noopener noreferrer">
+                                        {{ url.name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Дата добавления:</th>
+                                <td>{{ url.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <a href="{{ url_for('list_urls') }}" class="btn btn-secondary">
+                    ← Назад к списку
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
