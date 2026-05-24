@@ -5,22 +5,50 @@ import psycopg
 import validators
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, url_for
-from psycopg.rows import dict_row
+
+from .db import (
+    fetch_and_parse_url,
+    get_all_urls,
+    get_db_connection,
+    get_url_by_id,
+    get_url_details,
+    insert_url_check,
+)
+from .utils import format_date
 
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 app = Flask(__name__)
-app.secret_key = "ваш_секретный_ключ_для_flash"
-
-
-def get_db_connection():
-    conn = psycopg.connect(DATABASE_URL, row_factory=dict_row)
-    return conn
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "your_secret_key")
+app.jinja_env.filters["date"] = format_date
 
 
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/urls/<int:id>/checks", methods=["POST"])
+def create_check(id):
+    url = get_url_by_id(id)
+
+    if url:
+        result = fetch_and_parse_url(url)
+        if "error" not in result:
+            insert_url_check(id, result)
+            flash("Страница успешно проверена", "success")
+        else:
+            flash(result["error"], "danger")
+    else:
+        flash("URL не найден", "danger")
+
+    return redirect(url_for("list_urls", id=id))
+
+
+@app.route("/urls")
+def urls():
+    urls_data = get_all_urls()
+    return render_template("urls.html", urls=urls_data)
 
 
 @app.route("/urls", methods=["GET"])
@@ -35,17 +63,10 @@ def list_urls():
     return render_template("urls.html", urls=urls)
 
 
-@app.route("/urls/<int:id>", methods=["GET"])
-def show_url(id):
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT id, name, created_at FROM urls WHERE id = %s", (id,))
-    url = cur.fetchone()
-    conn.close()
-    if url is None:
-        flash("Запись не найдена", "danger")
-        return redirect(url_for("list_urls"))
-    return render_template("url.html", url=url)
+@app.route("/urls/<int:id>")
+def url_details(id):
+    url_data, checks = get_url_details(id)
+    return render_template("url.html", url=url_data, checks=checks)
 
 
 @app.route("/", methods=["POST"])
@@ -64,9 +85,9 @@ def add_url():
 
     parsed = urlparse(url_input)
     normalized_url = parsed.scheme + "://" + parsed.netloc + parsed.path
+    conn = get_db_connection()
 
     try:
-        conn = get_db_connection()
         cur = conn.cursor()
         cur.execute("INSERT INTO urls (name) VALUES (%s)", (normalized_url,))
         conn.commit()
@@ -75,7 +96,7 @@ def add_url():
         flash("Такой URL уже существует", "warning")
     except Exception as e:
         flash("Произошла ошибка при добавлении", "danger")
-        print(e)  # Для логов
+        print(e)
     finally:
         if "conn" in locals():
             conn.close()
