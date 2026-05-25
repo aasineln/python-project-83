@@ -5,18 +5,20 @@ import psycopg
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from psycopg import Connection
 from psycopg.rows import dict_row
 
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
+MAX_TEXT_LENGTH = 255
 
 
-def get_db_connection():
+def get_db_connection() -> Connection:
     conn = psycopg.connect(DATABASE_URL, row_factory=dict_row)
     return conn
 
 
-def get_url_by_id(url_id):
+def get_url_by_id(url_id: int) -> str | None:
     conn = get_db_connection()
     try:
         cur = conn.cursor()
@@ -35,25 +37,29 @@ def get_url_by_id(url_id):
         conn.close()
 
 
-def fetch_and_parse_url(url):
+def fetch_and_parse_url(url: str) -> dict:
+    def truncate(text: str | None) -> str | None:
+        if not text:
+            return None
+        text = text.strip()
+        if len(text) <= MAX_TEXT_LENGTH:
+            return text
+        return f"{text[:MAX_TEXT_LENGTH]}..."
+
     try:
         response = requests.get(url, timeout=5)
         if response.ok:
             soup = BeautifulSoup(response.content, "html.parser")
+            title_elem = soup.find("title")
+            h1_elem = soup.find("h1")
+            meta_elem = soup.find("meta", attrs={"name": "description"})
+
             return {
                 "status_code": response.status_code,
-                "title": (
-                    soup.find("title").text.strip()
-                    if soup.find("title")
-                    else None
-                ),
-                "h1": soup.find("h1").text.strip() if soup.find("h1") else None,
+                "title": truncate(title_elem.text) if title_elem else None,
+                "h1": truncate(h1_elem.text) if h1_elem else None,
                 "description": (
-                    soup.find("meta", attrs={"name": "description"})
-                    .get("content")
-                    .strip()
-                    if soup.find("meta", attrs={"name": "description"})
-                    else None
+                    truncate(meta_elem.get("content")) if meta_elem else None
                 ),
             }
         else:
@@ -62,7 +68,7 @@ def fetch_and_parse_url(url):
         return {"error": f"Ошибка сети: {str(e)}"}
 
 
-def insert_url_check(url_id, data):
+def insert_url_check(url_id: int, data: dict) -> None:
     conn = get_db_connection()
     try:
         cur = conn.cursor()
@@ -105,8 +111,7 @@ def get_all_urls():
         conn.close()
 
 
-def get_url_details(url_id):
-    """Получает детали одного URL и список всех его проверок."""
+def get_url_details(url_id: int) -> tuple:
     conn = get_db_connection()
     try:
         cur = conn.cursor()

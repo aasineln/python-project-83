@@ -73,7 +73,7 @@ def add_url():
     parsed = urlparse(url_input)
     scheme = parsed.scheme.lower()
     netloc = parsed.netloc.lower()
-    normalized_url = urlunparse((scheme, netloc, '', '', '', ''))
+    normalized_url = urlunparse((scheme, netloc, "", "", "", ""))
 
     conn = get_db_connection()
     cur = conn.cursor()
