@@ -91,7 +91,7 @@ def add_url():
         cur = conn.cursor()
         cur.execute("INSERT INTO urls (name) VALUES (%s)", (normalized_url,))
         conn.commit()
-        flash("URL успешно добавлен", "success")
+        flash("Страница успешно добавлена", "success")
     except psycopg.errors.UniqueViolation:
         flash("Такой URL уже существует", "warning")
     except Exception as e:
