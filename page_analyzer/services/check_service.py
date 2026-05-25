@@ -29,9 +29,7 @@ class CheckService:
 
         return True, "Страница успешно проверена"
 
-    def get_check_history(
-        self, url_id: int, limit: int | None = None
-    ) -> list:
+    def get_check_history(self, url_id: int, limit: int | None = None) -> list:
         checks = self.check_repo.get_by_url_id(url_id)
 
         if limit:

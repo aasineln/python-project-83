@@ -19,3 +19,6 @@ def create_app(config=None):
     register_blueprints(app)
 
     return app
+
+
+app = create_app()

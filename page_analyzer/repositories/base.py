@@ -34,7 +34,10 @@ class SQLBuilder:
     def insert(table: str, data: dict[str, Any]) -> tuple:
         columns = ", ".join(data.keys())
         placeholders = ", ".join(["%s"] * len(data))
-        query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders}) RETURNING id"
+        query = (
+            f"INSERT INTO {table} ({columns}) VALUES ({placeholders}) "
+            f"RETURNING id"
+        )
         return query, tuple(data.values())
 
     @staticmethod

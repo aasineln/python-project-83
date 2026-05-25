@@ -8,9 +8,10 @@ class CheckRepository(Repository):
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT id, url_id, status_code, h1, title, description, created_at
+                    SELECT id, url_id, status_code, h1, title, description, 
+                      created_at
                     FROM url_checks WHERE id = %s
-                """,
+                    """,
                     (id,),
                 )
                 row = cur.fetchone()
@@ -31,7 +32,8 @@ class CheckRepository(Repository):
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT id, url_id, status_code, h1, title, description, created_at
+                    SELECT id, url_id, status_code, h1, title, description, 
+                    created_at
                     FROM url_checks WHERE url_id = %s
                     ORDER BY created_at DESC
                 """,

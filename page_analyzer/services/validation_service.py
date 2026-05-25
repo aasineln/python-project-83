@@ -23,7 +23,8 @@ class ValidationService:
         if len(url) > self.config.max_url_length:
             return (
                 False,
-                f"URL слишком длинный (максимум {self.config.max_url_length} символов)",
+                f"URL слишком длинный (максимум {self.config.max_url_length} "
+                f"символов)",
             )
 
         if not urlparse(url).scheme:
