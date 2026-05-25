@@ -1,5 +1,5 @@
 PORT ?= 8000
-APP_MODULE ?= 'page_analyzer:create_app()'
+APP_MODULE ?= 'page_analyzer:app'
 FLASK_APP ?= run.py
 PYTHON_VERSION ?= 3.12
 
@@ -9,7 +9,7 @@ install:
 	uv sync
 
 dev:
-	uv run flask --app page_analyzer:create_app --debug run --host=0.0.0.0 --port=$(PORT)
+	uv run flask --app $(APP_MODULE) --debug run --host=0.0.0.0 --port=$(PORT)
 
 start:
 	uv run gunicorn -w 5 -b 0.0.0.0:$(PORT) $(APP_MODULE)
