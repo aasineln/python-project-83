@@ -10,7 +10,7 @@ from psycopg.rows import dict_row
 
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
-MAX_TEXT_LENGTH = 255
+MAX_TEXT_LENGTH = 200
 
 
 def get_db_connection() -> Connection:
