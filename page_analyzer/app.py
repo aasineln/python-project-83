@@ -42,7 +42,7 @@ def create_check(id):
     else:
         flash("URL не найден", "danger")
 
-    return redirect(url_for("list_urls", id=id))
+    return redirect(url_for("url_details", id=id))
 
 
 @app.route("/urls")
