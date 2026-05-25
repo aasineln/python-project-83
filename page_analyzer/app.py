@@ -101,4 +101,4 @@ def add_url():
         if "conn" in locals():
             conn.close()
 
-    return redirect(url_for("index"))
+    return redirect(url_for("urls"))
