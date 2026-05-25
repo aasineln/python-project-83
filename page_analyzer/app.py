@@ -23,12 +23,12 @@ app.jinja_env.filters["date"] = format_date
 
 
 @app.route("/")
-def index():
+def index() -> str:
     return render_template("index.html")
 
 
 @app.route("/urls/<int:id>/checks", methods=["POST"])
-def create_check(id):
+def create_check(id: int):
     url = get_url_by_id(id)
 
     if url:
@@ -44,14 +44,14 @@ def create_check(id):
     return redirect(url_for("url_details", id=id))
 
 
-@app.route("/urls")
-def urls():
+@app.route("/urls", methods=["GET"])
+def urls() -> str:
     urls_data = get_all_urls()
     return render_template("urls.html", urls=urls_data)
 
 
 @app.route("/urls/<int:id>")
-def url_details(id):
+def url_details(id: int) -> str:
     url_data, checks = get_url_details(id)
     return render_template("url.html", url=url_data, checks=checks)
 
