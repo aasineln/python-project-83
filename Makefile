@@ -3,18 +3,19 @@ APP_MODULE ?= wsgi:app
 FLASK_APP ?= run.py
 PYTHON_VERSION ?= 3.12
 
+.PHONY: install dev start render-start build lint lint-fix black
+
 install:
 	uv sync
 
 dev:
 	uv run flask --debug --app run
 
-.PHONY: start
 start:
 	uv run gunicorn -w 5 -b 0.0.0.0:$(PORT) $(APP_MODULE)
 
 render-start:
-	gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+	gunicorn -w 5 -b 0.0.0.0:$(PORT) $(APP_MODULE)
 
 build:
 	./build.sh
