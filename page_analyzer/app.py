@@ -1,5 +1,5 @@
 import os
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 
 import validators
 from dotenv import load_dotenv
@@ -71,26 +71,25 @@ def add_url():
         return redirect(url_for("index"))
 
     parsed = urlparse(url_input)
-    normalized_url = f"{parsed.scheme}://{parsed.netloc}{parsed.path.rstrip('/')}"
+    scheme = parsed.scheme.lower()
+    netloc = parsed.netloc.lower()
+    normalized_url = urlunparse((scheme, netloc, '', '', '', ''))
 
     conn = get_db_connection()
     cur = conn.cursor()
 
     try:
-        # Сначала проверяем, существует ли URL
         cur.execute("SELECT id FROM urls WHERE name = %s", (normalized_url,))
         existing = cur.fetchone()
 
         if existing:
             url_id = existing["id"]
-            flash("Такой URL уже существует", "warning")
+            flash("Страница уже существует", "warning")
         else:
-            # Создаем новый URL с RETURNING id
             cur.execute(
                 "INSERT INTO urls (name) VALUES (%s) RETURNING id",
                 (normalized_url,),
             )
-            print(normalized_url)
             url_id = cur.fetchone()["id"]
             conn.commit()
             flash("Страница успешно добавлена", "success")
