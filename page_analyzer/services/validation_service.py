@@ -49,9 +49,7 @@ class ValidationService:
         elif scheme == "https" and netloc.endswith(":443"):
             netloc = netloc[:-4]
 
-        path = parsed.path.rstrip("/")
-
-        return urlunparse((scheme, netloc, path, "", "", ""))
+        return urlunparse((scheme, netloc, "", "", "", ""))
 
     def extract_domain(self, url: str) -> str:
         parsed = urlparse(url)

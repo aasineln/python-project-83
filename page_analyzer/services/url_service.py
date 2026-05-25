@@ -25,7 +25,6 @@ class URLService:
             return None, error, "danger"
 
         normalized_name = self.validator.normalize(raw_url)
-
         existing_url = self.url_repo.get_by_name(normalized_name)
         if existing_url:
             return existing_url, "Страница уже существует", "warning"
