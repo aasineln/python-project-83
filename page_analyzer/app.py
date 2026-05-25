@@ -71,7 +71,7 @@ def add_url():
         return redirect(url_for("index"))
 
     parsed = urlparse(url_input)
-    normalized_url = parsed.scheme + "://" + parsed.netloc + parsed.path
+    normalized_url = f"{parsed.scheme}://{parsed.netloc}{parsed.path.rstrip('/')}"
 
     conn = get_db_connection()
     cur = conn.cursor()
