@@ -1,7 +1,6 @@
 import os
 from urllib.parse import urlparse
 
-import psycopg
 import validators
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, url_for
@@ -51,18 +50,6 @@ def urls():
     return render_template("urls.html", urls=urls_data)
 
 
-@app.route("/urls", methods=["GET"])
-def list_urls():
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute(
-        "SELECT id, name, created_at FROM urls ORDER BY created_at DESC"
-    )
-    urls = cur.fetchall()
-    conn.close()
-    return render_template("urls.html", urls=urls)
-
-
 @app.route("/urls/<int:id>")
 def url_details(id):
     url_data, checks = get_url_details(id)
@@ -85,20 +72,35 @@ def add_url():
 
     parsed = urlparse(url_input)
     normalized_url = parsed.scheme + "://" + parsed.netloc + parsed.path
+
     conn = get_db_connection()
+    cur = conn.cursor()
 
     try:
-        cur = conn.cursor()
-        cur.execute("INSERT INTO urls (name) VALUES (%s)", (normalized_url,))
-        conn.commit()
-        flash("Страница успешно добавлена", "success")
-    except psycopg.errors.UniqueViolation:
-        flash("Такой URL уже существует", "warning")
-    except Exception as e:
-        flash("Произошла ошибка при добавлении", "danger")
-        print(e)
-    finally:
-        if "conn" in locals():
-            conn.close()
+        # Сначала проверяем, существует ли URL
+        cur.execute("SELECT id FROM urls WHERE name = %s", (normalized_url,))
+        existing = cur.fetchone()
 
-    return redirect(url_for("urls"))
+        if existing:
+            url_id = existing["id"]
+            flash("Такой URL уже существует", "warning")
+        else:
+            # Создаем новый URL с RETURNING id
+            cur.execute(
+                "INSERT INTO urls (name) VALUES (%s) RETURNING id",
+                (normalized_url,),
+            )
+            print(normalized_url)
+            url_id = cur.fetchone()["id"]
+            conn.commit()
+            flash("Страница успешно добавлена", "success")
+
+        conn.close()
+        return redirect(url_for("url_details", id=url_id))
+
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        flash("Произошла ошибка при добавлении", "danger")
+        print(f"Error adding URL: {e}")
+        return redirect(url_for("index"))
