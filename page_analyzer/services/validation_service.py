@@ -2,7 +2,7 @@ from urllib.parse import urlparse, urlunparse
 
 import validators
 
-from app.config import get_config
+from page_analyzer.config import get_config
 
 
 class ValidationService:

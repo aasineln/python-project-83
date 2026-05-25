@@ -1,11 +1,11 @@
 from datetime import datetime
 from typing import Any
 
-from app.models.check import URLChecker
-from app.models.url import URL
-from app.repositories.check_repository import CheckRepository
-from app.repositories.url_repository import URLRepository
-from app.services.validation_service import ValidationService
+from page_analyzer.models.check import URLChecker
+from page_analyzer.models.url import URL
+from page_analyzer.repositories.check_repository import CheckRepository
+from page_analyzer.repositories.url_repository import URLRepository
+from page_analyzer.services.validation_service import ValidationService
 
 
 class URLService:

@@ -9,7 +9,7 @@ install:
 	uv sync
 
 dev:
-	uv run flask --debug --app run
+	uv run flask --debug run
 
 start:
 	uv run gunicorn -w 5 -b 0.0.0.0:$(PORT) $(APP_MODULE)

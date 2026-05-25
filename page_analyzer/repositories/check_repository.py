@@ -1,5 +1,5 @@
-from app.models.check import URLChecker
-from app.repositories.base import Repository, SQLBuilder
+from page_analyzer.models.check import URLChecker
+from page_analyzer.repositories.base import Repository, SQLBuilder
 
 
 class CheckRepository(Repository):

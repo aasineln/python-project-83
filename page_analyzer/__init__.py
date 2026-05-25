@@ -1,8 +1,8 @@
 from flask import Flask
 
-from app.config import get_config
-from app.routes import register_blueprints
-from app.utils import format_date
+from page_analyzer.config import get_config
+from page_analyzer.routes import register_blueprints
+from page_analyzer.utils import format_date
 
 
 def create_app(config=None):

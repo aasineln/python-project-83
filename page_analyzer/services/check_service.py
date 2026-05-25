@@ -1,9 +1,9 @@
 from typing import Any
 
-from app.db import fetch_and_parse_url
-from app.models.check import URLChecker
-from app.repositories.check_repository import CheckRepository
-from app.repositories.url_repository import URLRepository
+from page_analyzer.db import fetch_and_parse_url
+from page_analyzer.models.check import URLChecker
+from page_analyzer.repositories.check_repository import CheckRepository
+from page_analyzer.repositories.url_repository import URLRepository
 
 
 class CheckService:

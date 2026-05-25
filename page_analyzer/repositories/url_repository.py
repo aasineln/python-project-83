@@ -1,7 +1,7 @@
 from typing import Any
 
-from app.models.url import URL
-from app.repositories.base import Repository, SQLBuilder
+from page_analyzer.models.url import URL
+from page_analyzer.repositories.base import Repository, SQLBuilder
 
 
 class URLRepository(Repository):

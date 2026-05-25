@@ -1,9 +1,9 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
-from app.repositories.check_repository import CheckRepository
-from app.repositories.url_repository import URLRepository
-from app.services.url_service import URLService
-from app.services.validation_service import ValidationService
+from page_analyzer.repositories.check_repository import CheckRepository
+from page_analyzer.repositories.url_repository import URLRepository
+from page_analyzer.services.url_service import URLService
+from page_analyzer.services.validation_service import ValidationService
 
 urls_bp = Blueprint("urls", __name__, url_prefix="/urls")
 
