@@ -1,6 +1,5 @@
 PORT ?= 8000
 APP_MODULE ?= 'page_analyzer:app'
-FLASK_APP ?= run.py
 PYTHON_VERSION ?= 3.12
 
 .PHONY: install dev start render-start build lint lint-fix black
