@@ -22,7 +22,7 @@ class CheckService:
         result = fetch_and_parse_url(url.name)
 
         if "error" in result:
-            return False, result["error"]
+            return False, "Произошла ошибка при проверке"
 
         check = URLChecker.from_parsed_result(url_id, result)
         self.check_repo.create(check)
