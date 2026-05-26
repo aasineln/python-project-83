@@ -21,3 +21,8 @@ dependencies = [
 line-length = 80
 target-version = ["py312"]
 skip-string-normalization = false
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=7.1.0",
+]
