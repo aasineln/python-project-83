@@ -16,4 +16,6 @@ def get_url_service():
 def format_date(value: datetime, format: str = "%Y-%m-%d") -> str:
     if value is None:
         return ""
+    if isinstance(value, str):
+        value = datetime.fromisoformat(value)
     return value.strftime(format)

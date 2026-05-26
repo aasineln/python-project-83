@@ -8,6 +8,9 @@ class URL:
     name: str
     created_at: datetime = field(default_factory=datetime.now)
 
+    def __str__(self):
+        return self.name if self.name else ""
+
     def __post_init__(self):
         if not self.name or len(self.name) > 255:
             raise ValueError("Invalid URL name")

@@ -36,6 +36,10 @@ def checks(url_id: int):
 @app.route("/urls")
 def list_urls():
     urls_data = url_service.get_all_urls_with_status()
+    for url in urls_data:
+        if "last_checked" not in url:
+            url["last_checked"] = None
+
     return render_template("urls.html", urls=urls_data)
 
 
