@@ -1,5 +1,5 @@
 ### Hexlet tests and linter status:
-[![Actions Status](https://github.com/aasineln/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/aasineln/python-project-83/actions) [![QA SonarQube](https://sonarcloud.io/api/project_badges/measure?project=aasineln-python-project-83&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=aasineln_aasineln-python-project-83&branch=main)
+[![Actions Status](https://github.com/aasineln/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/aasineln/python-project-83/actions) [![QA SonarQube](https://sonarcloud.io/api/project_badges/measure?project=aasineln_python-project-83&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=aasineln_python-project-83&branch=main)
 
 ## Project: Page Analyzer
 
