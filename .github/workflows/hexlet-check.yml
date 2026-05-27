@@ -7,9 +7,10 @@ name: hexlet-check
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches:
+      - '**'
+    tags:
+      - '**'
 
 jobs:
   build:
